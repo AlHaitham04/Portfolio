@@ -10,7 +10,7 @@ export function Dashboard() {
     const [portfolio, setPortfolio] = useState({});
     const [livePrices, setLivePrices] = useState({});
 
-    const API_URL = 'https://alhaithamportfolio.xo.je/account.php';
+    const API_URL = 'https://alhaithamportfolio.xo.je/pages/account.php';
 
     const validateInput = () => {
         if (ticker.trim().length === 0) {
