@@ -6,7 +6,7 @@ import { ProtectedRoute } from './ProtectedRoute';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/Portfolio">
       <Routes>
         <Route path="/" element={<Account />} />
 
