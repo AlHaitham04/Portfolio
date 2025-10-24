@@ -31,7 +31,7 @@ export function Account() {
 
         setLoading(true);
         try {
-            const res = await fetch('https://alhaithamportfolio.xo.je/pages/account.php', {
+            const res = await fetch('https://alhaithamportfolio.xo.je/account.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
