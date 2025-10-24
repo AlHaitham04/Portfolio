@@ -5,14 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          // create a separate chunk for large dependencies
-          'vue-vendor': ['vue', 'vue-router'],
-          'charting': ['chart.js', 'recharts']
-        }
-      }
-    }
+    chunkSizeWarningLimit: 1000 // increase to 1000 kB
   }
+
 })
