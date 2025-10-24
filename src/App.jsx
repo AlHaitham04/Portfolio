@@ -8,10 +8,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Account />} />
+        <Route path="/Portfolio/" element={<Account />} />
 
         <Route
-          path="/Dashboard"
+          path="/Portfolio/Dashboard"
           element={
             <ProtectedRoute>
               <Dashboard />
@@ -20,7 +20,7 @@ function App() {
         />
 
         <Route
-          path="/Stats"
+          path="/Portfolio/Stats"
           element={
             <ProtectedRoute>
               <Stats />
