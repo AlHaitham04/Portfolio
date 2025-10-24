@@ -1,0 +1,233 @@
+body {
+    background-color: #ecf0f1;
+    color: #ecf0f1;
+    margin: 0;
+    padding: 0;
+}
+
+.Dashboard {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem;
+    justify-content: space-between;
+    align-items: flex-start;
+    box-sizing: border-box;
+    margin-top: 10rem;
+    margin-left: 2rem;
+}
+
+
+.left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 65%;
+    min-height: 70vh;
+    background-color: transparent;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.inputs1,
+.pBreakdown {
+    flex: 1;
+    width: 100%;
+    background-color: #34495e;
+    border-radius: 1rem;
+    font-size: 1.3rem;
+    line-height: 2rem;
+    padding: 1rem;
+    color: #ecf0f1;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.inputs1 {
+    max-height: 40vh;
+}
+
+.viewOrders {
+    width: 30%;
+    background-color: #34495e;
+    border-radius: 1rem;
+    padding: 1rem;
+    color: #ecf0f1;
+    min-height: 70vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+
+button {
+    display: inline-block;
+    margin-right: 0.7rem;
+    border: 0.05rem solid;
+    border-radius: 0.25rem;
+    padding: 0.8rem 1.8rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    background-color: #ecf0f1;
+}
+
+.table-wrapper {
+    max-height: 16rem;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+}
+
+.table-wrapper2 {
+    max-height: 43rem;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.table-wrapper::-webkit-scrollbar,
+.table-wrapper2::-webkit-scrollbar {
+    display: none;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+th,
+td {
+    padding: 0.3rem;
+    text-align: left;
+    color: #ecf0f1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+}
+
+.form-group1 {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group1 label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #ecf0f1;
+}
+
+input[type="text"],
+input[type="number"] {
+    padding: 0.7rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.2s ease;
+    width: 90%;
+}
+
+input::placeholder {
+    color: #95a5a6;
+}
+
+input:focus {
+    border: 1px solid #1abc9c;
+    background-color: #34495e;
+}
+
+.button-group1 {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* ---------- MOBILE ---------- */
+@media screen and (max-width: 768px) {
+    .Dashboard {
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 8rem auto 2rem auto;
+        gap: 1.5rem;
+        width: 95%;
+        padding: 1rem;
+        height: auto;
+    }
+
+    .left-column,
+    .viewOrders {
+        width: 100%;
+        max-width: none;
+        height: auto;
+        flex-direction: column;
+    }
+
+    .inputs1,
+    .pBreakdown,
+    .viewOrders {
+        width: 100%;
+        padding: 1rem;
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
+        margin: 0;
+        box-sizing: border-box;
+
+    }
+
+    .inputs1 {
+        min-height: 63vh;
+    }
+
+    .pBreakdown,
+    .viewOrders {
+        min-height: 50vh;
+    }
+
+    .button-group1 {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .table-wrapper,
+    .table-wrapper2 {
+        max-height: 12rem;
+        overflow-y: auto;
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    th,
+    td {
+        font-size: clamp(0.8rem, 2.2vw, 0.95rem);
+        padding: 0.4rem;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+        font-size: clamp(0.8rem, 2vw, 0.95rem);
+    }
+
+    .inputs1 h1,
+    .pBreakdown h1,
+    .viewOrders h1 {
+        font-size: clamp(1.2rem, 3vw, 1.2rem);
+        text-align: center;
+        line-height: 2rem;
+        margin-bottom: 0.8rem;
+    }
+
+    input::placeholder {
+        font-size: clamp(1.2rem, 3vw, 1.2rem);
+    }
+}
