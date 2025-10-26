@@ -9,7 +9,7 @@ export function Stats() {
     const [profitLoss, setProfitLoss] = useState([]);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-    const API_URL = 'http://localhost/portfolio/portfolio.php';
+    const API_URL = 'https://github.com/AlHaitham04/Portfolio/blob/main/account.php';
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28DFF', '#FF6384'];
 
 
