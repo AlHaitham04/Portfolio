@@ -1,10 +1,9 @@
 <?php
-header("Access-Control-Allow-Origin: https://alhaitham04.github.io/Portfolio");
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Content-Type: application/json; charset=utf-8");
 
-// Handle preflight OPTIONS request from browser
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
@@ -12,10 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-$host = 'sql303.infinityfree.com';
-$db = 'if0_40248807_portfolio';
-$user = 'if0_40248807';
-$pass = 'QrBImVKhu3bUDt';
+$host = 'sql12.freesqldatabase.com';
+$db = 'sql12804643';
+$user = 'sql12804643';
+$pass = '54NSMjwlGs';
 
 $conn = new mysqli($host, $user, $pass, $db);
 $conn->set_charset('utf8mb4');
