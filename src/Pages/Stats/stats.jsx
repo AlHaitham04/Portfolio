@@ -9,7 +9,7 @@ export function Stats() {
     const [profitLoss, setProfitLoss] = useState([]);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-    const API_URL = 'http://localhost:5000';
+    const API_URL = 'https://portfolio-back-end-igqj.onrender.com';
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28DFF', '#FF6384'];
 
     useEffect(() => {
@@ -22,7 +22,7 @@ export function Stats() {
         const user_id = localStorage.getItem('user_id');
         if (!user_id) return;
         try {
-            const res = await fetch(`${API_URL}/transactions?user_id=${user_id}`);
+            const res = await fetch(`${API_URL}/portfolio/transactions?user_id=${user_id}`);
             const data = await res.json();
             setTransactions(data);
         } catch (error) {
@@ -35,18 +35,21 @@ export function Stats() {
     }, []);
 
     useEffect(() => {
-        if (transactions.length === 0) return;
+        if (!transactions.length) return;
         const portfolio = {};
         const profitLossMap = {};
+
         transactions.forEach(tx => {
             const { ticker, shares, price, type } = tx;
             if (!portfolio[ticker]) portfolio[ticker] = { shares: 0, totalCost: 0 };
             if (!profitLossMap[ticker]) profitLossMap[ticker] = { bought: 0, sold: 0, net: 0 };
+
             if (type === 'buy') {
                 portfolio[ticker].shares += shares;
                 portfolio[ticker].totalCost += shares * price;
                 profitLossMap[ticker].bought += shares * price;
             }
+
             if (type === 'sell') {
                 const avgCost = portfolio[ticker].shares + shares > 0
                     ? portfolio[ticker].totalCost / (portfolio[ticker].shares + shares)
@@ -55,8 +58,10 @@ export function Stats() {
                 portfolio[ticker].totalCost -= shares * avgCost;
                 profitLossMap[ticker].sold += shares * price;
             }
+
             profitLossMap[ticker].net = profitLossMap[ticker].sold - profitLossMap[ticker].bought;
         });
+
         const totalValue = Object.values(portfolio).reduce((acc, p) => acc + p.totalCost, 0);
         const pieData = Object.entries(portfolio)
             .filter(([_, info]) => info.shares > 0)
@@ -65,7 +70,9 @@ export function Stats() {
                 value: info.totalCost,
                 percentage: ((info.totalCost / totalValue) * 100).toFixed(1)
             }));
+
         const plData = Object.entries(profitLossMap).map(([ticker, data]) => ({ ticker, ...data }));
+
         setDistributionData(pieData);
         setProfitLoss(plData);
     }, [transactions]);

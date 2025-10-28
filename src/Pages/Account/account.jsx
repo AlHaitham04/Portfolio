@@ -12,6 +12,8 @@ export function Account() {
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
+    const BACKEND_URL = 'https://portfolio-back-end-igqj.onrender.com';
+
     const validateEmail = (email) => email.includes('@') && email.includes('.');
     const validatePassword = (password) => password.length >= 8;
 
@@ -30,8 +32,7 @@ export function Account() {
 
         setLoading(true);
         try {
-            // Call Node.js backend instead of PHP
-            const res = await fetch('http://localhost:5001/auth', {
+            const res = await fetch(`${BACKEND_URL}/account`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -41,7 +42,7 @@ export function Account() {
                 }),
             });
 
-            const data = await res.json(); // Node.js backend returns JSON
+            const data = await res.json();
 
             if (data.success) {
                 localStorage.setItem('user_id', data.user_id);
