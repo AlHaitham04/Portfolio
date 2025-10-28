@@ -5,6 +5,10 @@ import portfolioRoutes from './src/routes/portfolio.js';
 
 const app = express();
 
+app.get('/', (req, res) => {
+  res.send('Portfolio Backend is running!');
+});
+
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
