@@ -41,20 +41,21 @@ export function Dashboard() {
             return;
         }
 
+        const normalizedTicker = ticker.trim().toUpperCase();
         const sharesNum = Number(shares);
         const priceNum = Number(price);
 
         if (type === 'sell') {
-            const currentHolding = portfolio[ticker]?.shares || 0;
+            const currentHolding = portfolio[normalizedTicker]?.shares || 0;
             if (sharesNum > currentHolding) {
-                alert(`You are trying to sell ${sharesNum} shares of ${ticker}, but you only own ${currentHolding}.`);
+                alert(`You are trying to sell ${sharesNum} shares of ${normalizedTicker}, but you only own ${currentHolding}.`);
                 return;
             }
         }
 
         const payload = {
             user_id: parseInt(user_id),
-            ticker,
+            ticker: normalizedTicker,
             shares: sharesNum,
             price: priceNum,
             type,
@@ -70,7 +71,7 @@ export function Dashboard() {
             const data = await res.json();
 
             if (data.success) {
-                alert(`${type === 'buy' ? 'Purchase' : 'Sell'} complete: ${shares} shares of ${ticker} at $${price}.`);
+                alert(`${type === 'buy' ? 'Purchase' : 'Sell'} complete: ${sharesNum} shares of ${normalizedTicker} at $${priceNum}.`);
                 setTicker('');
                 setShares('');
                 setPrice('');
@@ -104,19 +105,35 @@ export function Dashboard() {
     const calculatePortfolio = (txs) => {
         const port = {};
 
-        txs.forEach(({ ticker, shares, price, type }) => {
+        // Sort transactions by their id or timestamp in ascending order
+        const sortedTxs = [...txs].sort((a, b) => a.id - b.id);
+
+        sortedTxs.forEach(({ ticker, shares, price, type }) => {
             if (!port[ticker]) {
                 port[ticker] = { shares: 0, totalCost: 0 };
             }
 
-            const multiplier = type === 'buy' ? 1 : -1;
-            port[ticker].shares += shares * multiplier;
-            if (type === 'buy') port[ticker].totalCost += price * shares;
+            if (type === 'buy') {
+                port[ticker].totalCost += price * shares;
+                port[ticker].shares += shares;
+            } else if (type === 'sell') {
+                const avgCost = port[ticker].shares > 0
+                    ? port[ticker].totalCost / port[ticker].shares
+                    : 0;
+
+                port[ticker].totalCost -= avgCost * shares;
+                port[ticker].shares -= shares;
+
+                if (port[ticker].shares < 0) port[ticker].shares = 0;
+                if (port[ticker].totalCost < 0) port[ticker].totalCost = 0;
+            }
         });
 
         setPortfolio(port);
         fetchLivePrices(Object.keys(port));
     };
+
+
 
     const fetchLivePrices = async (symbols) => {
         if (symbols.length === 0) return;

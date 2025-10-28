@@ -92,7 +92,7 @@ export function Stats() {
                 <div className='distribution'>
                     <h1 className='ID'>Investment Distribution</h1>
                     <div className="chart-wrapper">
-                        <ResponsiveContainer width="100%" height={isMobile ? 250 : 410}>
+                        <ResponsiveContainer width="100%" height={isMobile ? 230 : 410}>
                             <PieChart>
                                 <Pie
                                     data={distributionData}
@@ -114,11 +114,11 @@ export function Stats() {
                                             return (
                                                 <div
                                                     style={{
-                                                        background: 'rgba(20, 25, 30, 0.85)',
+                                                        background: 'rgba(20, 25, 30, 0.75)',
                                                         color: '#00C49F',
-                                                        padding: '8px 12px',
+                                                        padding: '5px 10px',
                                                         borderRadius: '8px',
-                                                        fontSize: '1rem',
+                                                        fontSize: '0.8rem',
                                                         textShadow: '0 0 5px rgba(0,196,159,0.6)',
                                                     }}
                                                 >
@@ -134,7 +134,13 @@ export function Stats() {
                                     layout={isMobile ? "horizontal" : "vertical"}
                                     verticalAlign={isMobile ? "bottom" : "middle"}
                                     align={isMobile ? "center" : "right"}
-                                    wrapperStyle={{ marginTop: isMobile ? 10 : 0, fontSize: isMobile ? '0.8rem' : '1rem' }}
+                                    wrapperStyle={{
+                                        marginTop: 0,
+                                        fontSize: isMobile ? '0.8rem' : '1rem',
+                                        maxWidth: isMobile ? '100%' : 'auto',
+                                        overflowX: isMobile ? 'auto' : 'hidden',
+                                        whiteSpace: isMobile ? 'nowrap' : 'normal',
+                                    }}
                                     formatter={(value) => {
                                         const item = distributionData.find(d => d.name === value);
                                         return `${value} — ${item ? item.percentage : 0}%`;

@@ -1,3 +1,4 @@
+/* ------------------------- BASE STYLES ------------------------- */
 body {
     background-color: #ecf0f1;
     color: #ecf0f1;
@@ -16,7 +17,7 @@ body {
     margin-left: 2rem;
 }
 
-
+/* ------------------------- LEFT COLUMN ------------------------- */
 .left-column {
     display: flex;
     flex-direction: column;
@@ -28,16 +29,17 @@ body {
     box-sizing: border-box;
 }
 
+/* ------------------------- SECTIONS ------------------------- */
 .inputs1,
 .pBreakdown {
     flex: 1;
     width: 100%;
     background-color: #34495e;
     border-radius: 1rem;
-    font-size: 1.3rem;
-    line-height: 2rem;
     padding: 1rem;
     color: #ecf0f1;
+    font-size: 1.3rem;
+    line-height: 2rem;
     box-sizing: border-box;
     overflow-y: auto;
 }
@@ -57,7 +59,7 @@ body {
     box-sizing: border-box;
 }
 
-
+/* ------------------------- BUTTONS ------------------------- */
 button {
     display: inline-block;
     margin-right: 0.7rem;
@@ -69,41 +71,13 @@ button {
     background-color: #ecf0f1;
 }
 
-.table-wrapper {
-    max-height: 16rem;
-    overflow-y: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-
+.button-group1 {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
 }
 
-.table-wrapper2 {
-    max-height: 43rem;
-    overflow-y: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-.table-wrapper::-webkit-scrollbar,
-.table-wrapper2::-webkit-scrollbar {
-    display: none;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    border-spacing: 0;
-}
-
-th,
-td {
-    padding: 0.3rem;
-    text-align: left;
-    color: #ecf0f1;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-
-}
-
+/* ------------------------- INPUTS ------------------------- */
 .form-group1 {
     display: flex;
     flex-direction: column;
@@ -137,25 +111,83 @@ input:focus {
     background-color: #34495e;
 }
 
-.button-group1 {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
-/* ---------- MOBILE ---------- */
+/* ------------------------- TABLES ------------------------- */
+.table-wrapper,
+.table-wrapper2 {
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.table-wrapper {
+    max-height: 16rem;
+}
+
+.table-wrapper2 {
+    max-height: 43rem;
+}
+
+.table-wrapper::-webkit-scrollbar,
+.table-wrapper2::-webkit-scrollbar {
+    display: none;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+th,
+td {
+    padding: 0.3rem;
+    text-align: left;
+    color: #ecf0f1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ------------------------- TYPOGRAPHY HIERARCHY ------------------------- */
+.inputs1 h1,
+.pBreakdown h1,
+.viewOrders h1 {
+    font-size: clamp(2rem, 4vw, 2.4rem);
+    /* Main heading */
+    text-align: center;
+    margin-bottom: 1rem;
+    line-height: 2.4rem;
+}
+
+.inputs1 h2,
+.pBreakdown h2,
+.viewOrders h2 {
+    font-size: clamp(1.6rem, 3vw, 1.8rem);
+    /* Subheading */
+    text-align: center;
+    margin-bottom: 0.6rem;
+}
+
+table th {
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    font-weight: 600;
+}
+
+table td {
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
+}
+
+/* ------------------------- MOBILE ------------------------- */
 @media screen and (max-width: 768px) {
     .Dashboard {
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
-        margin: 8rem auto 2rem auto;
+        margin: 8rem auto 2rem;
         gap: 1.5rem;
         width: 95%;
         padding: 1rem;
@@ -175,10 +207,10 @@ input[type="number"]::-webkit-inner-spin-button {
     .viewOrders {
         width: 100%;
         padding: 1rem;
-        font-size: clamp(0.9rem, 2.5vw, 1rem);
+        font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+        /* slightly smaller */
         margin: 0;
         box-sizing: border-box;
-
     }
 
     .inputs1 {
@@ -191,11 +223,8 @@ input[type="number"]::-webkit-inner-spin-button {
     }
 
     .button-group1 {
-        display: flex;
-        flex-direction: row;
         gap: 0.5rem;
         width: 100%;
-        align-items: center;
         justify-content: center;
     }
 
@@ -203,31 +232,44 @@ input[type="number"]::-webkit-inner-spin-button {
     .table-wrapper2 {
         max-height: 12rem;
         overflow-y: auto;
-        width: 100%;
         overflow-x: auto;
+        width: 100%;
     }
 
-    th,
-    td {
-        font-size: clamp(0.8rem, 2.2vw, 0.95rem);
-        padding: 0.4rem;
-    }
-
-    input[type="text"],
-    input[type="number"] {
-        font-size: clamp(0.8rem, 2vw, 0.95rem);
-    }
 
     .inputs1 h1,
     .pBreakdown h1,
     .viewOrders h1 {
-        font-size: clamp(1.2rem, 3vw, 1.2rem);
+        font-size: clamp(1.2rem, 3.7vw, 1.5rem);
         text-align: center;
-        line-height: 2rem;
         margin-bottom: 0.8rem;
+        line-height: 2rem;
+    }
+
+    .inputs1 h2,
+    .pBreakdown h2,
+    .viewOrders h2 {
+        font-size: clamp(1.3rem, 3vw, 1.4rem);
+        text-align: center;
+        margin-bottom: 0.6rem;
+        line-height: 1.8rem;
+    }
+
+    th {
+        font-size: clamp(0.9rem, 2vw, 1rem);
+        font-weight: 600;
+    }
+
+    td {
+        font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+    }
+
+    input[type="text"],
+    input[type="number"] {
+        font-size: clamp(0.85rem, 2vw, 0.95rem);
     }
 
     input::placeholder {
-        font-size: clamp(1.2rem, 3vw, 1.2rem);
+        font-size: clamp(1rem, 3vw, 1.1rem);
     }
 }
