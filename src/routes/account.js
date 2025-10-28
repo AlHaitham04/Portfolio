@@ -1,12 +1,8 @@
-// server.js
 import express from 'express';
 import mysql from 'mysql2/promise';
-import cors from 'cors';
 import bcrypt from 'bcryptjs';
 
-const app = express();
-app.use(cors({ origin: 'http://localhost:5173' }));
-app.use(express.json());
+const router = express.Router();
 
 // Database connection
 const dbConfig = {
@@ -16,7 +12,7 @@ const dbConfig = {
     database: 'sql12804643',
 };
 
-app.post('/auth', async (req, res) => {
+router.post('/', async (req, res) => {
     const { action, email, password } = req.body;
 
     if (!email || !password) return res.json({ success: false, message: 'Email and password required' });
@@ -30,18 +26,24 @@ app.post('/auth', async (req, res) => {
 
             const hashedPassword = await bcrypt.hash(password, 10);
             const [result] = await conn.execute('INSERT INTO users (email, password) VALUES (?, ?)', [email, hashedPassword]);
+            await conn.end();
             return res.json({ success: true, message: 'User registered', user_id: result.insertId });
 
         } else if (action === 'signin') {
             const [rows] = await conn.execute('SELECT id, password FROM users WHERE email = ?', [email]);
-            if (rows.length === 0) return res.json({ success: false, message: 'User not found' });
+            if (rows.length === 0) {
+                await conn.end();
+                return res.json({ success: false, message: 'User not found' });
+            }
 
             const user = rows[0];
             const match = await bcrypt.compare(password, user.password);
+            await conn.end();
             if (match) return res.json({ success: true, message: 'Login successful', user_id: user.id });
             return res.json({ success: false, message: 'Invalid credentials' });
 
         } else {
+            await conn.end();
             return res.json({ success: false, message: 'Invalid action' });
         }
 
@@ -51,4 +53,4 @@ app.post('/auth', async (req, res) => {
     }
 });
 
-app.listen(5001, () => console.log('Server running on port 5001'));
+export default router;
