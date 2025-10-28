@@ -67,8 +67,8 @@ export function Account() {
 
     return (
         <div className="sign">
+            <h1 className="HomePage">Welcome to Your Portfolio Tracker</h1>
             <div className="page-container">
-                <h1>Welcome to Your Portfolio Tracker</h1>
                 <div className="inputs">
                     <h1>Sign In</h1>
                     <form>
