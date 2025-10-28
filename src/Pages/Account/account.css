@@ -115,11 +115,11 @@ input[type="number"]::-webkit-inner-spin-button {
     .page-container {
         flex-direction: column;
         padding: 1rem;
-        min-height: 100vh;
+        min-height: auto;
         width: 100%;
         box-sizing: border-box;
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
     }
 
@@ -130,7 +130,7 @@ input[type="number"]::-webkit-inner-spin-button {
         font-size: 1rem;
         line-height: 1.6rem;
         box-sizing: border-box;
-        margin-top: 7rem;
+        margin-top: 10rem;
         display: flex;
         flex-direction: column;
     }
@@ -173,17 +173,18 @@ input[type="number"]::-webkit-inner-spin-button {
         padding: 0.6rem 0;
         font-size: 1rem;
         margin-top: 1rem;
-        color: #0000;
     }
 
     .HomePage {
         font-size: 1.5rem;
-        top: 3%;
+        top: 0.3rem;
+        padding-bottom: 1rem;
         left: 50%;
         transform: translate(-50%, 0%);
         text-align: center;
         white-space: normal;
         max-width: 90%;
+
     }
 
     .password-group .fa-icon {
