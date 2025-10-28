@@ -4,14 +4,11 @@ import accountRoutes from './src/routes/account.js';
 import portfolioRoutes from './src/routes/portfolio.js';
 
 const app = express();
-<<<<<<< HEAD
 
 app.get('/', (req, res) => {
   res.send('Portfolio Backend is running!');
 });
 
-=======
->>>>>>> 3943c12 (update)
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
