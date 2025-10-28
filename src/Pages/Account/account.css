@@ -173,6 +173,7 @@ input[type="number"]::-webkit-inner-spin-button {
         padding: 0.6rem 0;
         font-size: 1rem;
         margin-top: 1rem;
+        color: #0000;
     }
 
     .HomePage {
