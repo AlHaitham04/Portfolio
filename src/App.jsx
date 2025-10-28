@@ -1,7 +1,7 @@
 import { Dashboard } from './Pages/Dashboard/dashboard';
 import { Stats } from './Pages/Stats/stats';
 import { Account } from './Pages/Account/account';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
 
 function App() {
