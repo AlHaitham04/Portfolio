@@ -9,9 +9,8 @@ export function Stats() {
     const [profitLoss, setProfitLoss] = useState([]);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-    const API_URL = 'http://localhost/portfolio/portfolio.php';
+    const API_URL = 'http://localhost:5000';
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28DFF', '#FF6384'];
-
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -22,13 +21,12 @@ export function Stats() {
     const fetchTransactions = async () => {
         const user_id = localStorage.getItem('user_id');
         if (!user_id) return;
-
         try {
-            const res = await fetch(`${API_URL}?user_id=${user_id}`);
+            const res = await fetch(`${API_URL}/transactions?user_id=${user_id}`);
             const data = await res.json();
             setTransactions(data);
         } catch (error) {
-            console.error('Failed to fetch transactions:', error);
+            console.error(error);
         }
     };
 
@@ -38,35 +36,27 @@ export function Stats() {
 
     useEffect(() => {
         if (transactions.length === 0) return;
-
         const portfolio = {};
         const profitLossMap = {};
-
         transactions.forEach(tx => {
             const { ticker, shares, price, type } = tx;
-
             if (!portfolio[ticker]) portfolio[ticker] = { shares: 0, totalCost: 0 };
             if (!profitLossMap[ticker]) profitLossMap[ticker] = { bought: 0, sold: 0, net: 0 };
-
             if (type === 'buy') {
                 portfolio[ticker].shares += shares;
                 portfolio[ticker].totalCost += shares * price;
                 profitLossMap[ticker].bought += shares * price;
             }
-
             if (type === 'sell') {
                 const avgCost = portfolio[ticker].shares + shares > 0
                     ? portfolio[ticker].totalCost / (portfolio[ticker].shares + shares)
                     : 0;
                 portfolio[ticker].shares -= shares;
                 portfolio[ticker].totalCost -= shares * avgCost;
-
                 profitLossMap[ticker].sold += shares * price;
             }
-
             profitLossMap[ticker].net = profitLossMap[ticker].sold - profitLossMap[ticker].bought;
         });
-
         const totalValue = Object.values(portfolio).reduce((acc, p) => acc + p.totalCost, 0);
         const pieData = Object.entries(portfolio)
             .filter(([_, info]) => info.shares > 0)
@@ -75,12 +65,7 @@ export function Stats() {
                 value: info.totalCost,
                 percentage: ((info.totalCost / totalValue) * 100).toFixed(1)
             }));
-
-        const plData = Object.entries(profitLossMap).map(([ticker, data]) => ({
-            ticker,
-            ...data
-        }));
-
+        const plData = Object.entries(profitLossMap).map(([ticker, data]) => ({ ticker, ...data }));
         setDistributionData(pieData);
         setProfitLoss(plData);
     }, [transactions]);
@@ -107,21 +92,18 @@ export function Stats() {
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
                                 </Pie>
-
                                 <Tooltip
                                     content={({ active, payload }) => {
                                         if (active && payload && payload.length) {
                                             return (
-                                                <div
-                                                    style={{
-                                                        background: 'rgba(20, 25, 30, 0.75)',
-                                                        color: '#00C49F',
-                                                        padding: '5px 10px',
-                                                        borderRadius: '8px',
-                                                        fontSize: '0.8rem',
-                                                        textShadow: '0 0 5px rgba(0,196,159,0.6)',
-                                                    }}
-                                                >
+                                                <div style={{
+                                                    background: 'rgba(20, 25, 30, 0.75)',
+                                                    color: '#00C49F',
+                                                    padding: '5px 10px',
+                                                    borderRadius: '8px',
+                                                    fontSize: '0.8rem',
+                                                    textShadow: '0 0 5px rgba(0,196,159,0.6)',
+                                                }}>
                                                     {payload[0].name} — ${payload[0].value.toFixed(2)}
                                                 </div>
                                             );
@@ -129,7 +111,6 @@ export function Stats() {
                                         return null;
                                     }}
                                 />
-
                                 <Legend
                                     layout={isMobile ? "horizontal" : "vertical"}
                                     verticalAlign={isMobile ? "bottom" : "middle"}
@@ -150,7 +131,6 @@ export function Stats() {
                         </ResponsiveContainer>
                     </div>
                 </div>
-
                 <div className='profit'>
                     <h1>Profit & Loss</h1>
                     <table>

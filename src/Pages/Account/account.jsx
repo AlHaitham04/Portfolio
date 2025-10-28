@@ -15,7 +15,6 @@ export function Account() {
     const validateEmail = (email) => email.includes('@') && email.includes('.');
     const validatePassword = (password) => password.length >= 8;
 
-
     const handleSubmit = async (e, currentAction) => {
         e.preventDefault();
 
@@ -31,7 +30,8 @@ export function Account() {
 
         setLoading(true);
         try {
-            const res = await fetch('http://localhost/portfolio/account.php', {
+            // Call Node.js backend instead of PHP
+            const res = await fetch('http://localhost:5001/auth', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -41,16 +41,7 @@ export function Account() {
                 }),
             });
 
-            const text = await res.text();
-
-            let data;
-            try {
-                data = JSON.parse(text);
-            } catch (jsonErr) {
-                alert('Server returned invalid JSON: ' + text);
-                setLoading(false);
-                return;
-            }
+            const data = await res.json(); // Node.js backend returns JSON
 
             if (data.success) {
                 localStorage.setItem('user_id', data.user_id);
@@ -70,7 +61,7 @@ export function Account() {
             <h1 className="HomePage">Welcome to Your Portfolio Tracker</h1>
             <div className="page-container">
                 <div className="inputs">
-                    <h1>Sign In</h1>
+                    <h1>Sign In / Sign Up</h1>
                     <form>
                         <div className="form-group">
                             <label htmlFor="email">Email</label>

@@ -10,10 +10,12 @@ export function Dashboard() {
     const [portfolio, setPortfolio] = useState({});
     const [livePrices, setLivePrices] = useState({});
 
-    const API_URL = 'http://localhost/portfolio/portfolio.php';
+    // Replace with your deployed backend URL when not using localhost
+    const API_URL = 'http://localhost:5000';
 
+    // --- Validate user input ---
     const validateInput = () => {
-        if (ticker.trim().length === 0) {
+        if (!ticker.trim()) {
             alert('Please enter a stock ticker.');
             return false;
         }
@@ -32,6 +34,7 @@ export function Dashboard() {
         return true;
     };
 
+    // --- Handle Buy / Sell Transactions ---
     const handleTransaction = async (type) => {
         if (!validateInput()) return;
 
@@ -48,7 +51,9 @@ export function Dashboard() {
         if (type === 'sell') {
             const currentHolding = portfolio[normalizedTicker]?.shares || 0;
             if (sharesNum > currentHolding) {
-                alert(`You are trying to sell ${sharesNum} shares of ${normalizedTicker}, but you only own ${currentHolding}.`);
+                alert(
+                    `You are trying to sell ${sharesNum} shares of ${normalizedTicker}, but you only own ${currentHolding}.`
+                );
                 return;
             }
         }
@@ -62,7 +67,7 @@ export function Dashboard() {
         };
 
         try {
-            const res = await fetch(API_URL, {
+            const res = await fetch(`${API_URL}/transaction`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
@@ -85,15 +90,13 @@ export function Dashboard() {
         }
     };
 
+    // --- Fetch all transactions for user ---
     const fetchTransactions = async () => {
         const user_id = localStorage.getItem('user_id');
-        if (!user_id) {
-            alert('User not logged in. Please sign in again.');
-            return;
-        }
+        if (!user_id) return;
 
         try {
-            const res = await fetch(`${API_URL}?user_id=${user_id}`);
+            const res = await fetch(`${API_URL}/transactions?user_id=${user_id}`);
             const data = await res.json();
             setTransactions(data);
             calculatePortfolio(data);
@@ -102,27 +105,21 @@ export function Dashboard() {
         }
     };
 
+    // --- Calculate Portfolio from transactions ---
     const calculatePortfolio = (txs) => {
         const port = {};
-
-        // Sort transactions by their id or timestamp in ascending order
         const sortedTxs = [...txs].sort((a, b) => a.id - b.id);
 
         sortedTxs.forEach(({ ticker, shares, price, type }) => {
-            if (!port[ticker]) {
-                port[ticker] = { shares: 0, totalCost: 0 };
-            }
+            if (!port[ticker]) port[ticker] = { shares: 0, totalCost: 0 };
 
             if (type === 'buy') {
-                port[ticker].totalCost += price * shares;
                 port[ticker].shares += shares;
+                port[ticker].totalCost += price * shares;
             } else if (type === 'sell') {
-                const avgCost = port[ticker].shares > 0
-                    ? port[ticker].totalCost / port[ticker].shares
-                    : 0;
-
-                port[ticker].totalCost -= avgCost * shares;
+                const avgCost = port[ticker].shares > 0 ? port[ticker].totalCost / port[ticker].shares : 0;
                 port[ticker].shares -= shares;
+                port[ticker].totalCost -= avgCost * shares;
 
                 if (port[ticker].shares < 0) port[ticker].shares = 0;
                 if (port[ticker].totalCost < 0) port[ticker].totalCost = 0;
@@ -133,33 +130,32 @@ export function Dashboard() {
         fetchLivePrices(Object.keys(port));
     };
 
-
-
+    // --- Fetch live prices for portfolio symbols ---
     const fetchLivePrices = async (symbols) => {
-        if (symbols.length === 0) return;
+        if (!symbols.length) return;
 
         try {
-            const res = await fetch(`${API_URL}?prices=${symbols.join(',')}`);
-            const data = await res.json();
-
-            const prices = {};
-            Object.entries(data).forEach(([symbol, price]) => {
-                prices[symbol] = parseFloat(price);
-            });
-
-            setLivePrices(prices);
+            const pricesObj = {};
+            for (let symbol of symbols) {
+                const res = await fetch(`${API_URL}/price?price=${symbol}`);
+                const data = await res.json();
+                pricesObj[symbol] = data.price || 0;
+            }
+            setLivePrices(pricesObj);
         } catch (error) {
             console.error('Failed to fetch live prices:', error);
         }
     };
 
+    // --- Initial fetch ---
     useEffect(() => {
         fetchTransactions();
     }, []);
 
+    // --- Auto refresh live prices every minute ---
     useEffect(() => {
         const symbols = Object.keys(portfolio);
-        if (symbols.length === 0) return;
+        if (!symbols.length) return;
 
         const interval = setInterval(() => {
             fetchLivePrices(symbols);
@@ -240,9 +236,7 @@ export function Dashboard() {
                                                 <td>${avgCost.toFixed(2)}</td>
                                                 <td>${data.totalCost.toFixed(2)}</td>
                                                 <td>
-                                                    {currentPrice
-                                                        ? `$${currentValue.toFixed(2)}`
-                                                        : 'Loading...'}
+                                                    {currentPrice ? `$${currentValue.toFixed(2)}` : 'Loading...'}
                                                 </td>
                                             </tr>
                                         );
