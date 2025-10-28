@@ -131,7 +131,7 @@ input[type="number"]::-webkit-inner-spin-button {
         font-size: 1rem;
         line-height: 1.6rem;
         box-sizing: border-box;
-        margin-top: 7rem;
+        margin-top: 6rem;
         display: flex;
         flex-direction: column;
     }
@@ -168,16 +168,13 @@ input[type="number"]::-webkit-inner-spin-button {
     }
 
     .button-group {
-        display: flex;
-        flex-direction: column;
         width: 100%;
         padding: 0.6rem 0;
         font-size: 1rem;
         margin-top: 1rem;
         color: black;
         text-align: center;
-        justify-content: center;
-        align-content: center;
+        display: block;
     }
 
     .HomePage {
