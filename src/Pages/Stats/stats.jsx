@@ -84,7 +84,7 @@ export function Stats() {
                 <div className='distribution'>
                     <h1 className='ID'>Investment Distribution</h1>
                     <div className="chart-wrapper">
-                        <ResponsiveContainer width="100%" height={isMobile ? 230 : 410}>
+                        <ResponsiveContainer width="100%" height={isMobile ? 320 : 500}>
                             <PieChart>
                                 <Pie
                                     data={distributionData}
@@ -92,7 +92,7 @@ export function Stats() {
                                     nameKey="name"
                                     cx="50%"
                                     cy="50%"
-                                    outerRadius={isMobile ? 80 : 190}
+                                    outerRadius={isMobile ? 100 : 200}
                                     fill="#8884d8"
                                 >
                                     {distributionData.map((entry, index) => (

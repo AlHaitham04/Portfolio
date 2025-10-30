@@ -185,7 +185,7 @@ export function Dashboard() {
                                                 <td>{data.shares}</td>
                                                 <td>${avgCost.toFixed(2)}</td>
                                                 <td>${data.totalCost.toFixed(2)}</td>
-                                                <td>{currentPrice ? `$${currentValue.toFixed(2)}` : 'Loading...'}</td>
+                                                <td>Coming Soon!</td>
                                             </tr>
                                         );
                                     })}

@@ -1,9 +1,10 @@
-/* ------------------------- BASE STYLES ------------------------- */
 body {
-    background-color: #ecf0f1;
-    color: #ecf0f1;
+    background: linear-gradient(180deg, #1a1b27 0%, #23263a 100%);
+    color: #f8fafc;
+    font-family: 'Inter', 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
+    min-height: 100vh;
 }
 
 .stats {
@@ -18,7 +19,6 @@ body {
     box-sizing: border-box;
 }
 
-/* ------------------------- SECTIONS ------------------------- */
 .distribution {
     display: flex;
     flex-direction: column;
@@ -27,14 +27,15 @@ body {
     gap: 1rem;
     width: 65%;
     height: 100%;
-    background-color: #34495e;
+    background: linear-gradient(145deg, #2a2e45, #1e2135);
     border-radius: 1rem;
-    color: #ecf0f1;
+    color: #f8fafc;
     padding: 1.5rem;
     box-sizing: border-box;
     font-size: clamp(1rem, 1.2vw, 1.3rem);
     line-height: 1.6em;
     overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
 }
 
 .chart-wrapper {
@@ -53,30 +54,31 @@ body {
     width: 30%;
     height: 100%;
     padding: 1rem;
-    background-color: #34495e;
+    background: linear-gradient(145deg, #2a2e45, #1e2135);
     border-radius: 1rem;
     font-size: clamp(0.9rem, 1vw, 1.1rem);
-    color: #ecf0f1;
+    color: #f8fafc;
     box-sizing: border-box;
     overflow-y: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
 }
 
-/* ------------------------- TYPOGRAPHY HIERARCHY ------------------------- */
 .distribution h1,
 .profit h1 {
     font-size: clamp(2rem, 4vw, 2.4rem);
-    /* Main heading */
     text-align: center;
     margin-bottom: 1rem;
     line-height: 2.4rem;
+    background: linear-gradient(90deg, #ff7a18, #af002d 85%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .distribution h2,
 .profit h2 {
     font-size: clamp(1.6rem, 3vw, 1.8rem);
-    /* Subheading */
     text-align: center;
     margin-bottom: 0.6rem;
 }
@@ -90,13 +92,12 @@ body {
     font-size: clamp(0.9rem, 1.2vw, 1rem);
 }
 
-/* ------------------------- TABLES ------------------------- */
 .profit table {
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
-    display: block;
     overflow-x: auto;
+    display: table;
 }
 
 .profit th,
@@ -119,7 +120,6 @@ body {
     border-radius: 4px;
 }
 
-/* ------------------------- MOBILE VIEW ------------------------- */
 @media screen and (max-width: 768px) {
     .stats {
         flex-direction: column;
@@ -140,6 +140,7 @@ body {
         max-height: 60vh;
         font-size: clamp(1.2rem, 3.7vw, 1.5rem);
         padding: 1rem;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
     }
 
     .distribution h1,
@@ -154,7 +155,7 @@ body {
     }
 
     .chart-wrapper {
-        height: 350px;
+        height: 300px;
         flex-direction: column;
         padding-top: 0;
     }
