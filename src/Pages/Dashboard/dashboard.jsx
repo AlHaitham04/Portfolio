@@ -9,8 +9,7 @@ export function Dashboard() {
     const [transactions, setTransactions] = useState([]);
     const [portfolio, setPortfolio] = useState({});
     const [livePrices, setLivePrices] = useState({});
-
-    const API_URL = 'https://portfolio-back-end-igqj.onrender.com';
+    const API_URL = 'http://localhost:5000';
 
     const validateInput = () => {
         if (!ticker.trim()) return false;
@@ -21,9 +20,9 @@ export function Dashboard() {
     };
 
     const handleTransaction = async (type) => {
-        if (!validateInput()) return;
+        if (!validateInput()) return alert('Invalid input');
         const user_id = localStorage.getItem('user_id');
-        if (!user_id) return;
+        if (!user_id) return alert('User not logged in');
 
         const normalizedTicker = ticker.trim().toUpperCase();
         const sharesNum = Number(shares);
@@ -31,22 +30,16 @@ export function Dashboard() {
 
         if (type === 'sell') {
             const currentHolding = portfolio[normalizedTicker]?.shares || 0;
-            if (sharesNum > currentHolding) return;
+            if (sharesNum > currentHolding) return alert('Not enough shares to sell');
         }
 
-        const payload = {
-            user_id: parseInt(user_id),
-            ticker: normalizedTicker,
-            shares: sharesNum,
-            price: priceNum,
-            type,
-        };
+        const payload = { user_id: parseInt(user_id), ticker: normalizedTicker, shares: sharesNum, price: priceNum, type };
 
         try {
             const res = await fetch(`${API_URL}/portfolio/transaction`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
+                body: JSON.stringify(payload)
             });
             const data = await res.json();
             if (data.success) {
@@ -54,35 +47,42 @@ export function Dashboard() {
                 setShares('');
                 setPrice('');
                 fetchTransactions();
+            } else {
+                alert('Transaction failed');
             }
         } catch (error) {
             console.error(error);
+            alert('Server error');
         }
     };
 
     const fetchTransactions = async () => {
         const user_id = localStorage.getItem('user_id');
         if (!user_id) return;
+
         try {
             const res = await fetch(`${API_URL}/portfolio/transactions?user_id=${user_id}`);
+            if (!res.ok) throw new Error('Failed to fetch transactions');
             const data = await res.json();
+            if (!Array.isArray(data)) throw new Error('Invalid data format');
             setTransactions(data);
             calculatePortfolio(data);
         } catch (error) {
             console.error(error);
+            setTransactions([]);
+            setPortfolio({});
         }
     };
 
     const calculatePortfolio = (txs) => {
         const port = {};
-        const sortedTxs = [...txs].sort((a, b) => a.id - b.id);
-        sortedTxs.forEach(({ ticker, shares, price, type }) => {
+        txs.forEach(({ ticker, shares, price, type }) => {
             if (!port[ticker]) port[ticker] = { shares: 0, totalCost: 0 };
             if (type === 'buy') {
                 port[ticker].shares += shares;
-                port[ticker].totalCost += price * shares;
+                port[ticker].totalCost += shares * price;
             } else if (type === 'sell') {
-                const avgCost = port[ticker].shares > 0 ? port[ticker].totalCost / port[ticker].shares : 0;
+                const avgCost = port[ticker].shares ? port[ticker].totalCost / port[ticker].shares : 0;
                 port[ticker].shares -= shares;
                 port[ticker].totalCost -= avgCost * shares;
                 if (port[ticker].shares < 0) port[ticker].shares = 0;
@@ -97,11 +97,11 @@ export function Dashboard() {
         if (!symbols.length) return;
         try {
             const pricesObj = {};
-            for (let symbol of symbols) {
+            await Promise.all(symbols.map(async (symbol) => {
                 const res = await fetch(`${API_URL}/portfolio/price?price=${symbol}`);
                 const data = await res.json();
-                pricesObj[symbol] = data.price || 0;
-            }
+                pricesObj[symbol] = parseFloat(data.price) || 0;
+            }));
             setLivePrices(pricesObj);
         } catch (error) {
             console.error(error);
@@ -128,31 +128,15 @@ export function Dashboard() {
                         <h1>Manage Portfolio</h1>
                         <div className="form-group1">
                             <label>Enter the Stock Name:</label>
-                            <input
-                                type="text"
-                                placeholder="e.g., AAPL"
-                                value={ticker}
-                                onChange={(e) => setTicker(e.target.value.toUpperCase())}
-                                maxLength={5}
-                            />
+                            <input type="text" placeholder="e.g., AAPL" value={ticker} onChange={(e) => setTicker(e.target.value.toUpperCase())} maxLength={5} />
                         </div>
                         <div className="form-group1">
                             <label>Enter the number of shares:</label>
-                            <input
-                                type="number"
-                                placeholder="e.g., 10"
-                                value={shares}
-                                onChange={(e) => setShares(e.target.value)}
-                            />
+                            <input type="number" placeholder="e.g., 10" value={shares} onChange={(e) => setShares(e.target.value)} />
                         </div>
                         <div className="form-group1">
                             <label>Enter current price:</label>
-                            <input
-                                type="number"
-                                placeholder="e.g., 150"
-                                value={price}
-                                onChange={(e) => setPrice(e.target.value)}
-                            />
+                            <input type="number" placeholder="e.g., 150" value={price} onChange={(e) => setPrice(e.target.value)} />
                         </div>
                         <div className="button-group1">
                             <button onClick={() => handleTransaction('buy')}>Buy</button>
@@ -178,14 +162,13 @@ export function Dashboard() {
                                         if (data.shares <= 0) return null;
                                         const avgCost = data.totalCost / data.shares;
                                         const currentPrice = livePrices[symbol] || 0;
-                                        const currentValue = currentPrice * data.shares;
                                         return (
                                             <tr key={symbol}>
                                                 <td>{symbol}</td>
                                                 <td>{data.shares}</td>
                                                 <td>${avgCost.toFixed(2)}</td>
                                                 <td>${data.totalCost.toFixed(2)}</td>
-                                                <td>Coming Soon!</td>
+                                                <td>${(currentPrice * data.shares).toFixed(2)}</td>
                                             </tr>
                                         );
                                     })}

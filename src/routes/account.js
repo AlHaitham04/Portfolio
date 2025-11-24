@@ -4,13 +4,14 @@ import bcrypt from 'bcryptjs';
 
 const router = express.Router();
 
-// Database connection
 const dbConfig = {
-    host: 'sql12.freesqldatabase.com',
-    user: 'sql12804643',
-    password: '54NSMjwlGs',
-    database: 'sql12804643',
+    host: '34.18.164.194',
+    user: 'root',
+    password: 'Gamer9296',
+    database: 'users',
+    port: 3306
 };
+
 
 router.post('/', async (req, res) => {
     const { action, email, password } = req.body;

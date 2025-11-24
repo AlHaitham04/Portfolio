@@ -12,7 +12,7 @@ export function Account() {
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
-    const BACKEND_URL = 'https://portfolio-back-end-igqj.onrender.com';
+    const BACKEND_URL = 'http://localhost:5000';
 
     const validateEmail = (email) => email.includes('@') && email.includes('.');
     const validatePassword = (password) => password.length >= 8;
