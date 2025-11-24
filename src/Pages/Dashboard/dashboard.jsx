@@ -9,7 +9,7 @@ export function Dashboard() {
     const [transactions, setTransactions] = useState([]);
     const [portfolio, setPortfolio] = useState({});
     const [livePrices, setLivePrices] = useState({});
-    const API_URL = 'http://localhost:5000';
+    const API_URL = 'https://portfolio-back-end-igqj.onrender.com';
 
     const validateInput = () => {
         if (!ticker.trim()) return false;
